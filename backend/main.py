@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from config import settings
 from db import init_db
+from routers.submissions import router as submissions_router
 from routers.tasks import router as tasks_router
 from seed import seed_tasks
 import aiosqlite
@@ -30,6 +31,7 @@ app.add_middleware(
 )
 
 app.include_router(tasks_router)
+app.include_router(submissions_router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=settings.BACKEND_PORT, reload=True)
