@@ -16,10 +16,22 @@ CREATE TABLE IF NOT EXISTS tasks (
 )
 """
 
+SUBMISSIONS_DDL = """
+CREATE TABLE IF NOT EXISTS submissions (
+    id TEXT PRIMARY KEY,
+    task_id TEXT NOT NULL REFERENCES tasks(id),
+    submitted_code TEXT NOT NULL,
+    results TEXT NOT NULL,
+    summary TEXT NOT NULL,
+    created_at TEXT NOT NULL
+)
+"""
+
 
 async def init_db():
     async with aiosqlite.connect(settings.DATABASE_URL) as db:
         await db.execute(TASKS_DDL)
+        await db.execute(SUBMISSIONS_DDL)
         await db.commit()
 
 
