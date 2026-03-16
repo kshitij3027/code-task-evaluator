@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchJSON, postJSON } from '../api/client';
+import CodeEditor from '../components/CodeEditor';
 import ResultsDisplay from '../components/ResultsDisplay';
 import type { TaskResponse, SubmissionResponse } from '../types';
 import styles from './TaskDetailPage.module.css';
@@ -82,19 +83,13 @@ export default function TaskDetailPage() {
       </table>
 
       <h3 className={styles.sectionTitle}>Submit Solution</h3>
-      <textarea
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        className={styles.codeInput}
-        placeholder="Write your Python solution here..."
-        rows={10}
-      />
+      <CodeEditor value={code} onChange={setCode} onSubmit={handleSubmit} />
       <button
         onClick={handleSubmit}
         disabled={isSubmitting || !code.trim()}
         className={styles.submitBtn}
       >
-        {isSubmitting ? 'Grading...' : 'Submit Solution'}
+        {isSubmitting ? 'Grading...' : 'Submit Solution (Ctrl+Enter)'}
       </button>
 
       {error && task && <p className={styles.errorText}>{error}</p>}

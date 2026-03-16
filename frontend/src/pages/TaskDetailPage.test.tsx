@@ -1,6 +1,17 @@
+import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+
+vi.mock('@monaco-editor/react', () => ({
+  default: ({ value, onChange }: any) =>
+    React.createElement('textarea', {
+      'data-testid': 'monaco-editor-mock',
+      value,
+      onChange: (e: any) => onChange?.(e.target.value),
+    }),
+}));
+
 import TaskDetailPage from './TaskDetailPage';
 
 const mockTask = {
@@ -54,17 +65,17 @@ describe('TaskDetailPage', () => {
     });
   });
 
-  it('renders code textarea', async () => {
+  it('renders code editor', async () => {
     renderWithRoute();
     await waitFor(() => {
-      expect(screen.getByPlaceholderText('Write your Python solution here...')).toBeInTheDocument();
+      expect(screen.getByTestId('code-editor')).toBeInTheDocument();
     });
   });
 
   it('renders submit button', async () => {
     renderWithRoute();
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: 'Submit Solution' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Submit Solution/i })).toBeInTheDocument();
     });
   });
 });

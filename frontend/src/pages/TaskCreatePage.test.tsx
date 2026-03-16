@@ -1,6 +1,17 @@
+import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+
+vi.mock('@monaco-editor/react', () => ({
+  default: ({ value, onChange }: any) =>
+    React.createElement('textarea', {
+      'data-testid': 'monaco-editor-mock',
+      value,
+      onChange: (e: any) => onChange?.(e.target.value),
+    }),
+}));
+
 import TaskCreatePage from './TaskCreatePage';
 
 beforeEach(() => {
@@ -12,7 +23,7 @@ describe('TaskCreatePage', () => {
     render(<MemoryRouter><TaskCreatePage /></MemoryRouter>);
     expect(screen.getByPlaceholderText('Task title')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Problem statement...')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Python solution...')).toBeInTheDocument();
+    expect(screen.getByTestId('code-editor')).toBeInTheDocument();
     expect(screen.getByText('Create Task', { selector: 'button' })).toBeInTheDocument();
   });
 
@@ -42,10 +53,9 @@ describe('TaskCreatePage', () => {
     expect(screen.queryByText('Test Case 2')).not.toBeInTheDocument();
   });
 
-  it('has required attributes on form fields', () => {
+  it('has required attributes on text form fields', () => {
     render(<MemoryRouter><TaskCreatePage /></MemoryRouter>);
     expect(screen.getByPlaceholderText('Task title')).toBeRequired();
     expect(screen.getByPlaceholderText('Problem statement...')).toBeRequired();
-    expect(screen.getByPlaceholderText('Python solution...')).toBeRequired();
   });
 });

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postJSON } from '../api/client';
+import CodeEditor from '../components/CodeEditor';
 import type { Difficulty, TaskResponse } from '../types';
 import styles from './TaskCreatePage.module.css';
 
@@ -110,14 +111,7 @@ export default function TaskCreatePage() {
 
         <label className={styles.label}>
           Reference Solution
-          <textarea
-            value={referenceSolution}
-            onChange={(e) => setReferenceSolution(e.target.value)}
-            className={`${styles.textarea} ${styles.code}`}
-            placeholder="Python solution..."
-            rows={6}
-            required
-          />
+          <CodeEditor value={referenceSolution} onChange={setReferenceSolution} height="200px" />
         </label>
 
         <div className={styles.testCasesSection}>
