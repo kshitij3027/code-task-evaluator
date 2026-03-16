@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchJSON, deleteJSON } from '../api/client';
+import Spinner from '../components/Spinner';
 import type { TaskResponse, Difficulty } from '../types';
 import styles from './TaskListPage.module.css';
 
@@ -59,7 +60,7 @@ export default function TaskListPage() {
       </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <Spinner />
       ) : (
         <div className={styles.cardGrid}>
           {tasks.map((task) => (

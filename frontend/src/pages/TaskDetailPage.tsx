@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { fetchJSON, postJSON, putJSON, deleteJSON } from '../api/client';
 import CodeEditor from '../components/CodeEditor';
 import ResultsDisplay from '../components/ResultsDisplay';
+import Spinner from '../components/Spinner';
+import Toast from '../components/Toast';
 import type { TaskResponse, SubmissionResponse, Difficulty } from '../types';
 import styles from './TaskDetailPage.module.css';
 
@@ -36,7 +38,7 @@ export default function TaskDetailPage() {
   const [editForm, setEditForm] = useState<EditForm | null>(null);
   const [editError, setEditError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState('');
 
   // Delete state
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -89,8 +91,7 @@ export default function TaskDetailPage() {
       const { data } = await putJSON<TaskResponse>(`/api/tasks/${taskId}`, body);
       setTask(data);
       setIsEditing(false);
-      setSuccessMessage('Task updated successfully');
-      setTimeout(() => setSuccessMessage(''), 3000);
+      setToastMessage('Task updated successfully');
     } catch (err) {
       setEditError(err instanceof Error ? err.message : 'Failed to update task');
     } finally {
@@ -145,12 +146,14 @@ export default function TaskDetailPage() {
     }
   }
 
+  const clearToast = useCallback(() => setToastMessage(''), []);
+
   if (error && !task) return <p className={styles.errorText}>{error}</p>;
-  if (!task) return <p>Loading...</p>;
+  if (!task) return <Spinner />;
 
   return (
     <div>
-      {successMessage && <div className={styles.successMsg}>{successMessage}</div>}
+      {toastMessage && <Toast message={toastMessage} onDismiss={clearToast} />}
 
       <div className={styles.taskHeader}>
         <h1>{task.title}</h1>

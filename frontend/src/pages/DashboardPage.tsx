@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchJSON, deleteJSON } from '../api/client';
+import Spinner from '../components/Spinner';
 import type { DashboardResponse, OverallStatsResponse, TaskDashboardItem, Difficulty, ResultStatus } from '../types';
 import styles from './DashboardPage.module.css';
 
@@ -104,7 +105,7 @@ export default function DashboardPage() {
       </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <Spinner />
       ) : (
         <table className={styles.table}>
           <thead>
