@@ -11,11 +11,12 @@ from schemas.submission import (
     SubmissionSummary,
     TestCaseResult,
 )
-from schemas.task import TaskCreate, TaskListResponse, TaskResponse, TestCaseSchema
+from schemas.task import TaskCreate, TaskListResponse, TaskResponse, TaskUpdate, TestCaseSchema
 
 __all__ = [
     "TestCaseSchema",
     "TaskCreate",
+    "TaskUpdate",
     "TaskResponse",
     "TaskListResponse",
     "SubmissionCreate",

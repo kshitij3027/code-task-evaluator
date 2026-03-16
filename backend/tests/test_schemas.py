@@ -8,6 +8,7 @@ from schemas.submission import (
     SubmissionSummary,
     TestCaseResult,
 )
+from schemas.task import TaskUpdate
 
 
 class TestSubmissionCreate:
@@ -87,3 +88,30 @@ class TestSubmissionResponse:
         assert restored.summary.passed == 1
         assert restored.results[0].status == ResultStatus.PASS
         assert restored.results[1].status == ResultStatus.WRONG_ANSWER
+
+
+class TestTaskUpdate:
+    def test_all_fields_optional(self):
+        update = TaskUpdate()
+        assert update.title is None
+        assert update.description is None
+        assert update.reference_solution is None
+        assert update.test_cases is None
+        assert update.difficulty is None
+
+    def test_partial_update(self):
+        update = TaskUpdate(title="New Title")
+        data = update.model_dump(exclude_none=True)
+        assert data == {"title": "New Title"}
+
+    def test_rejects_empty_title(self):
+        with pytest.raises(ValidationError) as exc_info:
+            TaskUpdate(title="")
+        errors = exc_info.value.errors()
+        assert any(e["type"] == "string_too_short" for e in errors)
+
+    def test_rejects_empty_test_cases_list(self):
+        with pytest.raises(ValidationError) as exc_info:
+            TaskUpdate(test_cases=[])
+        errors = exc_info.value.errors()
+        assert any(e["type"] == "too_short" for e in errors)
