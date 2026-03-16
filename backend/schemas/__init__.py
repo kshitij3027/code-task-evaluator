@@ -1,3 +1,9 @@
+from schemas.dashboard import (
+    DashboardResponse,
+    FailureModeBreakdown,
+    OverallStatsResponse,
+    TaskDashboardItem,
+)
 from schemas.submission import (
     SubmissionCreate,
     SubmissionListResponse,
@@ -17,4 +23,8 @@ __all__ = [
     "SubmissionSummary",
     "SubmissionResponse",
     "SubmissionListResponse",
+    "FailureModeBreakdown",
+    "TaskDashboardItem",
+    "DashboardResponse",
+    "OverallStatsResponse",
 ]

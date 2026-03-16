@@ -8,7 +8,7 @@ import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 
-from db import TASKS_DDL
+from db import SUBMISSIONS_DDL, TASKS_DDL
 from main import app
 
 
@@ -39,6 +39,7 @@ async def db():
     conn = await aiosqlite.connect(":memory:")
     conn.row_factory = aiosqlite.Row
     await conn.execute(TASKS_DDL)
+    await conn.execute(SUBMISSIONS_DDL)
     await conn.commit()
     try:
         yield conn
