@@ -1,0 +1,47 @@
+stories:
+  - name: "User views dashboard, creates a task, and submits a solution"
+    url: "http://localhost:5173"
+    workflow: |
+      Navigate to http://localhost:5173/
+      Verify the Dashboard page loads with a heading "Dashboard"
+      Verify a summary bar shows "Total Tasks", "Total Submissions", and "Overall Pass Rate"
+      Verify a table shows at least 3 pre-loaded tasks including "Two Sum", "FizzBuzz", and "Longest Common Subsequence"
+      Verify each task row shows a difficulty badge
+      Select "easy" from the difficulty filter dropdown
+      Verify only easy tasks are shown in the table
+      Select "All" from the difficulty filter to reset
+      Click on "Tasks" in the navigation bar
+      Verify the Task List page loads showing task cards with titles and difficulty badges
+      Click the "Create Task" link/button
+      Verify the Task Creation form loads with title, description, difficulty, reference solution, and test cases fields
+      Type "Add Two Numbers" in the title input
+      Type "Read two numbers from stdin and print their sum" in the description textarea
+      Select "easy" from the difficulty dropdown
+      Type "a, b = map(int, input().split())\nprint(a + b)" in the reference solution textarea
+      Type "3 4" in the first test case input field
+      Type "7" in the first test case expected output field
+      Click "Add Test Case"
+      Type "0 0" in the second test case input field
+      Type "0" in the second test case expected output field
+      Click the "Create Task" submit button
+      Verify the page redirects to the new task's detail page
+      Verify the task title "Add Two Numbers" is displayed
+      Verify the test cases are listed showing "3 4" and "7"
+
+  - name: "User submits solutions and views results on dashboard"
+    url: "http://localhost:5173"
+    workflow: |
+      Navigate to http://localhost:5173/
+      Click on the "Two Sum" task row in the dashboard table
+      Verify the Task Detail page loads with the title "Two Sum"
+      Verify the test cases are listed with input and expected output
+      Type "a, b = map(int, input().split())\nprint(a + b)" in the code textarea
+      Click the "Submit Solution" button
+      Verify a results section appears showing "Passed" and "test cases" text
+      Verify test case results show "Pass" status badges
+      Clear the code textarea
+      Type "print('wrong')" in the code textarea
+      Click the "Submit Solution" button
+      Verify results show "Wrong Answer" status badges
+      Navigate to http://localhost:5173/
+      Verify the dashboard shows submission counts for "Two Sum"
