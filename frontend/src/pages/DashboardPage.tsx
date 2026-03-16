@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchJSON } from '../api/client';
+import { fetchJSON, deleteJSON } from '../api/client';
 import type { DashboardResponse, OverallStatsResponse, TaskDashboardItem, Difficulty, ResultStatus } from '../types';
 import styles from './DashboardPage.module.css';
 
@@ -56,6 +56,16 @@ export default function DashboardPage() {
       .finally(() => setLoading(false));
   }, [filter]);
 
+  async function handleDelete(taskId: string, e: React.MouseEvent) {
+    e.stopPropagation();
+    try {
+      await deleteJSON(`/api/tasks/${taskId}`);
+      setTasks((prev) => prev.filter((t) => t.task_id !== taskId));
+    } catch {
+      // silently fail
+    }
+  }
+
   return (
     <div>
       <h1 className={styles.title}>Dashboard</h1>
@@ -104,6 +114,7 @@ export default function DashboardPage() {
               <th>Submissions</th>
               <th>Pass Rate</th>
               <th>Failure Modes</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -133,6 +144,22 @@ export default function DashboardPage() {
                         {STATUS_LABELS[status]}: {count}
                       </span>
                     ))}
+                </td>
+                <td>
+                  <div className={styles.actionButtons}>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); navigate(`/tasks/${task.task_id}?edit=true`); }}
+                      className={styles.editBtn}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={(e) => handleDelete(task.task_id, e)}
+                      className={styles.deleteBtn}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

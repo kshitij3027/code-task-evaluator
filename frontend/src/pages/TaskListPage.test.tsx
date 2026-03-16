@@ -38,4 +38,12 @@ describe('TaskListPage', () => {
       expect(screen.getByText('medium')).toBeInTheDocument();
     });
   });
+
+  it('renders delete buttons on each card', async () => {
+    render(<MemoryRouter><TaskListPage /></MemoryRouter>);
+    await waitFor(() => {
+      const deleteButtons = screen.getAllByRole('button', { name: 'Delete' });
+      expect(deleteButtons.length).toBe(2);
+    });
+  });
 });

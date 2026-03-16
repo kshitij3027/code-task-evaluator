@@ -10,6 +10,11 @@ vi.mock('@monaco-editor/react', () => ({
       value,
       onChange: (e: any) => onChange?.(e.target.value),
     }),
+  DiffEditor: ({ original, modified }: any) =>
+    React.createElement('div', { 'data-testid': 'monaco-diff-mock' },
+      React.createElement('pre', null, original),
+      React.createElement('pre', null, modified),
+    ),
 }));
 
 import TaskDetailPage from './TaskDetailPage';
@@ -76,6 +81,15 @@ describe('TaskDetailPage', () => {
     renderWithRoute();
     await waitFor(() => {
       expect(screen.getByRole('button', { name: /Submit Solution/i })).toBeInTheDocument();
+    });
+  });
+
+  it('renders edit, delete, and verify buttons', async () => {
+    renderWithRoute();
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Verify Reference Solution/i })).toBeInTheDocument();
     });
   });
 });

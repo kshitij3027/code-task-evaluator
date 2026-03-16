@@ -40,18 +40,28 @@
 }
 
 .card {
-  display: block;
-  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
   background: white;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  text-decoration: none;
-  color: inherit;
   transition: box-shadow 0.15s;
+  overflow: hidden;
 }
 
 .card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cardLink {
+  display: block;
+  padding: 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+}
+
+.cardLink:hover {
   text-decoration: none;
 }
 
@@ -72,6 +82,61 @@
   color: #64748b;
   margin: 0;
   line-height: 1.5;
+}
+
+.cardActions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.editBtn {
+  padding: 0.3rem 0.75rem;
+  background: #f59e0b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.editBtn:hover { background: #d97706; }
+
+.deleteBtn {
+  padding: 0.3rem 0.75rem;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.deleteBtn:hover { background: #dc2626; }
+
+.confirmDeleteBtn {
+  padding: 0.3rem 0.75rem;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancelBtn {
+  padding: 0.3rem 0.75rem;
+  background: #e5e7eb;
+  color: #374151;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .badge {

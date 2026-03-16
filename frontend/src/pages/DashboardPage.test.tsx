@@ -69,8 +69,18 @@ describe('DashboardPage', () => {
     await waitFor(() => {
       expect(screen.getByText('Two Sum')).toBeInTheDocument();
     });
-    // Check that non-zero badges are rendered
     const badges = screen.getAllByText(/: \d+/);
     expect(badges.length).toBeGreaterThan(0);
+  });
+
+  it('renders Actions column with Edit/Delete buttons', async () => {
+    render(<MemoryRouter><DashboardPage /></MemoryRouter>);
+    await waitFor(() => {
+      expect(screen.getByText('Actions')).toBeInTheDocument();
+      const editButtons = screen.getAllByRole('button', { name: 'Edit' });
+      expect(editButtons.length).toBe(2);
+      const deleteButtons = screen.getAllByRole('button', { name: 'Delete' });
+      expect(deleteButtons.length).toBe(2);
+    });
   });
 });
