@@ -1,4 +1,5 @@
 import type { TestCaseResult, SubmissionSummary, ResultStatus } from '../types';
+import DiffView from './DiffView';
 import styles from './ResultsDisplay.module.css';
 
 interface Props {
@@ -54,8 +55,16 @@ export default function ResultsDisplay({ results, summary }: Props) {
                   {STATUS_LABELS[r.status]}
                 </span>
               </td>
-              <td><pre className={styles.output}>{r.expected_output}</pre></td>
-              <td><pre className={styles.output}>{r.actual_output}</pre></td>
+              {r.status === 'WRONG_ANSWER' ? (
+                <td colSpan={2}>
+                  <DiffView expected={r.expected_output} actual={r.actual_output} />
+                </td>
+              ) : (
+                <>
+                  <td><pre className={styles.output}>{r.expected_output}</pre></td>
+                  <td><pre className={styles.output}>{r.actual_output}</pre></td>
+                </>
+              )}
               <td>{r.execution_time_ms}ms</td>
               <td>
                 {r.error_message && (

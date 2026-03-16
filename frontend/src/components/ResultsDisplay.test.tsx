@@ -1,5 +1,15 @@
-import { describe, it, expect } from 'vitest';
+import React from 'react';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+
+vi.mock('@monaco-editor/react', () => ({
+  DiffEditor: ({ original, modified }: { original?: string; modified?: string }) =>
+    React.createElement('div', { 'data-testid': 'monaco-diff-mock' },
+      React.createElement('pre', { 'data-testid': 'diff-expected' }, original),
+      React.createElement('pre', { 'data-testid': 'diff-actual' }, modified),
+    ),
+}));
+
 import ResultsDisplay from './ResultsDisplay';
 import type { TestCaseResult, SubmissionSummary } from '../types';
 
@@ -33,5 +43,20 @@ describe('ResultsDisplay', () => {
     render(<ResultsDisplay results={sampleResults} summary={sampleSummary} />);
     expect(screen.getByText('12ms')).toBeInTheDocument();
     expect(screen.getByText('8ms')).toBeInTheDocument();
+  });
+
+  it('shows diff view for WRONG_ANSWER results', () => {
+    render(<ResultsDisplay results={sampleResults} summary={sampleSummary} />);
+    expect(screen.getByTestId('monaco-diff-mock')).toBeInTheDocument();
+    expect(screen.getByTestId('diff-expected')).toHaveTextContent('5');
+    expect(screen.getByTestId('diff-actual')).toHaveTextContent('4');
+  });
+
+  it('does not show diff for PASS results', () => {
+    const passOnly: TestCaseResult[] = [
+      { test_case_index: 0, passed: true, expected_output: '3', actual_output: '3', execution_time_ms: 12, status: 'PASS', error_message: null },
+    ];
+    render(<ResultsDisplay results={passOnly} summary={{ passed: 1, failed: 0, total: 1 }} />);
+    expect(screen.queryByTestId('monaco-diff-mock')).not.toBeInTheDocument();
   });
 });
