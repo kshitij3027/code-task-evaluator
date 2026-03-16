@@ -1,3 +1,4 @@
+from services.executor import execute_code
 from services.task_service import create_task, get_task_by_id, get_tasks
 
-__all__ = ["create_task", "get_tasks", "get_task_by_id"]
+__all__ = ["create_task", "get_tasks", "get_task_by_id", "execute_code"]
