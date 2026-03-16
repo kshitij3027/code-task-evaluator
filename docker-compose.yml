@@ -1,0 +1,11 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - db-data:/app/data
+    environment:
+      - DATABASE_URL=./data/evaluator.db
+volumes:
+  db-data:

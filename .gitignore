@@ -26,6 +26,7 @@ data/*.db
 
 # Claude
 .claude/
+.agents/
 
 # Docker
 docker-compose.override.yml
