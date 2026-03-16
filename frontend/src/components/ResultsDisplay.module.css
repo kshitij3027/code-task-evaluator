@@ -1,0 +1,73 @@
+.container {
+  margin-top: 1rem;
+}
+
+.summaryBar {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.summaryPass { background: #dcfce7; color: #166534; }
+.summaryFail { background: #fef2f2; color: #991b1b; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+}
+
+.table th,
+.table td {
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: top;
+}
+
+.table th {
+  background: #f1f5f9;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: #475569;
+  text-transform: uppercase;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusPass { background: #dcfce7; color: #166534; }
+.statusWrongAnswer { background: #fecaca; color: #991b1b; }
+.statusRuntimeError { background: #fed7aa; color: #9a3412; }
+.statusTimeout { background: #fef3c7; color: #92400e; }
+.statusSyntaxError { background: #e9d5ff; color: #6b21a8; }
+
+.output {
+  margin: 0;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-width: 200px;
+}
+
+.errorMsg {
+  margin: 0;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.75rem;
+  color: #dc2626;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-width: 300px;
+}

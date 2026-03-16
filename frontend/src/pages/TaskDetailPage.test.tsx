@@ -1,0 +1,70 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import TaskDetailPage from './TaskDetailPage';
+
+const mockTask = {
+  id: 'task-1',
+  title: 'Two Sum',
+  description: 'Add two numbers',
+  difficulty: 'easy',
+  test_cases: [
+    { input: '1 2', expected_output: '3' },
+    { input: '0 0', expected_output: '0' },
+  ],
+  created_at: '2026-01-01',
+};
+
+const mockSubmissions = { submissions: [] };
+
+beforeEach(() => {
+  vi.spyOn(global, 'fetch').mockImplementation((url) => {
+    const urlStr = typeof url === 'string' ? url : url.toString();
+    if (urlStr.includes('/submissions')) {
+      return Promise.resolve({ ok: true, json: () => Promise.resolve(mockSubmissions) } as Response);
+    }
+    return Promise.resolve({ ok: true, json: () => Promise.resolve(mockTask) } as Response);
+  });
+});
+
+function renderWithRoute() {
+  return render(
+    <MemoryRouter initialEntries={['/tasks/task-1']}>
+      <Routes>
+        <Route path="/tasks/:taskId" element={<TaskDetailPage />} />
+      </Routes>
+    </MemoryRouter>
+  );
+}
+
+describe('TaskDetailPage', () => {
+  it('renders task title and difficulty', async () => {
+    renderWithRoute();
+    await waitFor(() => {
+      expect(screen.getByText('Two Sum')).toBeInTheDocument();
+      expect(screen.getByText('easy')).toBeInTheDocument();
+    });
+  });
+
+  it('renders test cases table', async () => {
+    renderWithRoute();
+    await waitFor(() => {
+      expect(screen.getByText('1 2')).toBeInTheDocument();
+      expect(screen.getByText('0 0')).toBeInTheDocument();
+    });
+  });
+
+  it('renders code textarea', async () => {
+    renderWithRoute();
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText('Write your Python solution here...')).toBeInTheDocument();
+    });
+  });
+
+  it('renders submit button', async () => {
+    renderWithRoute();
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Submit Solution' })).toBeInTheDocument();
+    });
+  });
+});
